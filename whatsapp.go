@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-//Client *whatsmeow.Client
+//whatsapp *whatsmeow.Client
 
 func GetLiveLoc(Message *waProto.Message) (lat float64, long float64) {
 	if Message.LiveLocationMessage != nil {
@@ -22,14 +22,14 @@ func GetLiveLoc(Message *waProto.Message) (lat float64, long float64) {
 	return lat, long
 }
 
-func SendMessage(msg string, toJID types.JID) (resp whatsmeow.SendResponse, err error) {
-	resp, err = model.Client.SendMessage(context.Background(), toJID, "", &waProto.Message{
-		Conversation: proto.String(msg),
-	})
+func SendMessage(msg string, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
+	var wamsg waProto.Message
+	wamsg.Conversation = proto.String(msg)
+	resp, err = whatsapp.SendMessage(context.Background(), toJID, &wamsg)
 	return resp, err
 }
 
-func SendListMessage(lstmsg model.ListMessage, toJID types.JID) (resp whatsmeow.SendResponse, err error) {
+func SendListMessage(lstmsg ListMessage, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
 	var lms []*waProto.ListMessage_Section
 	for _, sec := range lstmsg.Sections {
 
@@ -65,12 +65,12 @@ func SendListMessage(lstmsg model.ListMessage, toJID types.JID) (resp whatsmeow.
 			Message: message,
 		},
 	}
-	resp, err = model.Client.SendMessage(context.Background(), toJID, "", viewOnce)
+	resp, err = whatsapp.SendMessage(context.Background(), toJID, viewOnce)
 	return resp, err
 
 }
 
-func SendButtonMessage(btnmsg model.ButtonsMessage, toJID types.JID) (resp whatsmeow.SendResponse, err error) {
+func SendButtonMessage(btnmsg ButtonsMessage, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
 	var buttons []*waProto.ButtonsMessage_Button
 	for _, btn := range btnmsg.Buttons {
 		tmpbtn := waProto.ButtonsMessage_Button{
@@ -98,6 +98,6 @@ func SendButtonMessage(btnmsg model.ButtonsMessage, toJID types.JID) (resp whats
 			Message: this_message,
 		},
 	}
-	resp, err = model.Client.SendMessage(context.Background(), toJID, "", viewOnce)
+	resp, err = whatsapp.SendMessage(context.Background(), toJID, viewOnce)
 	return resp, err
 }

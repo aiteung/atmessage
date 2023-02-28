@@ -1,6 +1,7 @@
 package atwa
 
 //var Client *whatsmeow.Client
+
 //var V interface{}
 
 type MediaType int
