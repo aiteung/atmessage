@@ -1,4 +1,4 @@
-package atwa
+package atmessage
 
 //var Client *whatsmeow.Client
 
