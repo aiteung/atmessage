@@ -3,6 +3,8 @@ module github.com/aiteung/atmessage
 go 1.20
 
 require (
+	github.com/Rhymen/go-whatsapp v0.1.1
+	github.com/rs/xid v1.4.0
 	go.mau.fi/whatsmeow v0.0.0-20230226124255-e5c8f3c95d78
 	google.golang.org/protobuf v1.28.1
 )
