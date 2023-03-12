@@ -40,7 +40,7 @@ func IteungV1(IteungIPAddress string, apikey string, Info *types.MessageInfo, Me
 
 func MessageEvent(IteungIPAddress string, Info *types.MessageInfo, Message *waProto.Message, im *atmessage.IteungMessage, waclient *whatsmeow.Client) {
 	if Info.MediaType == "livelocation" {
-		LiveLoc(Message, im)
+		LiveLoc(Message, Info, im, waclient)
 	}
 	if Message.ExtendedTextMessage != nil {
 		Extended(Message, im)
@@ -54,11 +54,15 @@ func MessageEvent(IteungIPAddress string, Info *types.MessageInfo, Message *waPr
 	}
 }
 
-func LiveLoc(Message *waProto.Message, im *atmessage.IteungMessage) {
+func LiveLoc(Message *waProto.Message, Info *types.MessageInfo, im *atmessage.IteungMessage, waclient *whatsmeow.Client) {
 	if Message.LiveLocationMessage != nil {
 		im.Latitude = *Message.LiveLocationMessage.DegreesLatitude
 		im.Longitude = *Message.LiveLocationMessage.DegreesLongitude
-		im.Messages = autoiteung.BukaKelas(im.Group_name)
+		if im.Group_name != "" {
+			im.Messages = autoiteung.BukaKelas(im.Group_name)
+		} else {
+			LiveLocinPrivateMessage(Message, Info, im, waclient)
+		}
 	} else {
 		fmt.Println("LiveLocationMessage : ", Message.LiveLocationMessage)
 	}
