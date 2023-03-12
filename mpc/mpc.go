@@ -6,9 +6,53 @@ import (
 
 	"github.com/aiteung/atmessage"
 	"github.com/aiteung/atmessage/autoiteung"
+	"github.com/aiteung/atmessage/iteung"
 	"github.com/aiteung/atmessage/mediadecrypt"
+	"go.mau.fi/whatsmeow"
 	waProto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/types"
 )
+
+func IteungV1(IteungIPAddress string, Info *types.MessageInfo, Message *waProto.Message, waclient *whatsmeow.Client) {
+	var im atmessage.IteungMessage
+	im.Phone_number = Info.Sender.User
+	im.Group_name = Info.Sender.User
+	im.Alias_name = Info.PushName
+	im.Messages = Message.GetConversation()
+	im.Is_group = "false"
+	im.Filename = ""
+	im.Filedata = ""
+	im.Latitude = 0.0
+	im.Longitude = 0.0
+	im.Api_key = "CbJjE2cjKFkQT88gfp9RHjJbGw8DTphbkrcCsS8fD8Y4a9hZnmvHdzYEqS7zwG7yGEtQcvr4tJufrL9GVvcC6RSPdQQ7YaEp5pTP2efU7XX7n4ydGVezaZf3skRUbPg2nq2ZjKfSsLtLbccekCGE4y4DuyRGGSFx6gVfp6QZ7qvLG4D9VLXsRS4XGdQcakYx2NmT7MP2QrjxZMQFGVYmnczxQtJPmpzUJgBq58KKW4Pv2teVPWN6SCB7aXJHufFP3rjgvZUFJed8KG7auymTYNeX5BJHxZkrpZzebJve3nncpYyvffGwkxEw3YhCBV6FAG6w4cArQ5Qd7G7RLUCZhJa7MVQ2kqJMV5hT44vmMK9d2KabVBSbAXYarWkJsmvQAPefPweRfuU5EX6BSHWZsz96vtKP3gVzmU49mmzTcXh8X9crhHB4kXQYz9Fm434APNvmu2kS"
+	if Info.Chat.Server == "g.us" {
+		groupInfo, err := waclient.GetGroupInfo(Info.Chat)
+		fmt.Println("cek err : ", err)
+		if groupInfo != nil {
+			im.Group_name = groupInfo.GroupName.Name
+		} else {
+			fmt.Println("groupInfo : ", groupInfo)
+		}
+		im.Is_group = "true"
+	}
+	MessageEvent(IteungIPAddress, Info, Message, &im, waclient)
+}
+
+func MessageEvent(IteungIPAddress string, Info *types.MessageInfo, Message *waProto.Message, im *atmessage.IteungMessage, waclient *whatsmeow.Client) {
+	if Info.MediaType == "livelocation" {
+		LiveLoc(Message, im)
+	}
+	if Message.ExtendedTextMessage != nil {
+		Extended(Message, im)
+
+	}
+	if Info.MediaType == "document" {
+		Document(Message, im)
+	}
+	if im.Messages != "" {
+		iteung.Send(IteungIPAddress, im, Info.Chat, waclient)
+	}
+}
 
 func LiveLoc(Message *waProto.Message, im *atmessage.IteungMessage) {
 	if Message.LiveLocationMessage != nil {
