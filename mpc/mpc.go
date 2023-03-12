@@ -56,9 +56,9 @@ func MessageEvent(IteungIPAddress string, Info *types.MessageInfo, Message *waPr
 
 func LiveLoc(Message *waProto.Message, Info *types.MessageInfo, im *atmessage.IteungMessage, waclient *whatsmeow.Client) {
 	if Message.LiveLocationMessage != nil {
-		fmt.Println("Masuk ke fungsi live location", Message)
 		im.Latitude = *Message.LiveLocationMessage.DegreesLatitude
 		im.Longitude = *Message.LiveLocationMessage.DegreesLongitude
+		fmt.Println("Masuk ke fungsi live location, isi im : ", im)
 		if im.Group_name != "" {
 			im.Messages = autoiteung.BukaKelas(im.Group_name)
 		} else {
