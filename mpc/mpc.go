@@ -13,7 +13,7 @@ import (
 	"go.mau.fi/whatsmeow/types"
 )
 
-func IteungV1(IteungIPAddress string, Info *types.MessageInfo, Message *waProto.Message, waclient *whatsmeow.Client) {
+func IteungV1(IteungIPAddress string, apikey string, Info *types.MessageInfo, Message *waProto.Message, waclient *whatsmeow.Client) {
 	var im atmessage.IteungMessage
 	im.Phone_number = Info.Sender.User
 	im.Group_name = Info.Sender.User
@@ -24,7 +24,7 @@ func IteungV1(IteungIPAddress string, Info *types.MessageInfo, Message *waProto.
 	im.Filedata = ""
 	im.Latitude = 0.0
 	im.Longitude = 0.0
-	im.Api_key = "CbJjE2cjKFkQT88gfp9RHjJbGw8DTphbkrcCsS8fD8Y4a9hZnmvHdzYEqS7zwG7yGEtQcvr4tJufrL9GVvcC6RSPdQQ7YaEp5pTP2efU7XX7n4ydGVezaZf3skRUbPg2nq2ZjKfSsLtLbccekCGE4y4DuyRGGSFx6gVfp6QZ7qvLG4D9VLXsRS4XGdQcakYx2NmT7MP2QrjxZMQFGVYmnczxQtJPmpzUJgBq58KKW4Pv2teVPWN6SCB7aXJHufFP3rjgvZUFJed8KG7auymTYNeX5BJHxZkrpZzebJve3nncpYyvffGwkxEw3YhCBV6FAG6w4cArQ5Qd7G7RLUCZhJa7MVQ2kqJMV5hT44vmMK9d2KabVBSbAXYarWkJsmvQAPefPweRfuU5EX6BSHWZsz96vtKP3gVzmU49mmzTcXh8X9crhHB4kXQYz9Fm434APNvmu2kS"
+	im.Api_key = apikey
 	if Info.Chat.Server == "g.us" {
 		groupInfo, err := waclient.GetGroupInfo(Info.Chat)
 		fmt.Println("cek err : ", err)
