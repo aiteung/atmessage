@@ -58,8 +58,8 @@ func LiveLoc(Message *waProto.Message, Info *types.MessageInfo, im *atmessage.It
 	if Message.LiveLocationMessage != nil {
 		im.Latitude = *Message.LiveLocationMessage.DegreesLatitude
 		im.Longitude = *Message.LiveLocationMessage.DegreesLongitude
-		fmt.Println("Masuk ke fungsi live location, isi im.group_name : ", im.Group_name)
-		if im.Group_name != "" {
+		fmt.Println("Masuk ke fungsi live location, isi im.group_name : ", im.Is_group)
+		if im.Is_group == "true" {
 			im.Messages = autoiteung.BukaKelas(im.Group_name)
 		} else {
 			fmt.Println("Masuk ke fungsi LiveLocinPrivateMessage")
