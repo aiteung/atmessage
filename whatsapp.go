@@ -103,7 +103,9 @@ func SendButtonMessage(btnmsg ButtonsMessage, toJID types.JID, whatsapp *whatsme
 func SendDocumentMessage(plaintext []byte, filename string, caption string, mimetype string, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
 	respupload, err := whatsapp.Upload(context.Background(), plaintext, whatsmeow.MediaDocument)
 	if err != nil {
-		fmt.Println("SendDocumentMessage to wa server : ", err)
+		msg := fmt.Sprintf("SendDocumentMessage to wa server : %s", err)
+		fmt.Println(msg)
+		SendMessage(msg, toJID, whatsapp)
 	}
 	docMsg := &waProto.DocumentMessage{
 		Caption:       proto.String(caption),
