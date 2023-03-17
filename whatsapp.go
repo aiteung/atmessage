@@ -10,8 +10,6 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-//whatsapp *whatsmeow.Client
-
 func GetLiveLoc(Message *waProto.Message) (lat float64, long float64) {
 	if Message.LiveLocationMessage != nil {
 		lat = *Message.LiveLocationMessage.DegreesLatitude
