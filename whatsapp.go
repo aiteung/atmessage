@@ -101,3 +101,23 @@ func SendButtonMessage(btnmsg ButtonsMessage, toJID types.JID, whatsapp *whatsme
 	resp, err = whatsapp.SendMessage(context.Background(), toJID, viewOnce)
 	return resp, err
 }
+
+func SendDocumentMessage(plaintext []byte, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
+	respupload, err := whatsapp.Upload(context.Background(), plaintext, whatsmeow.MediaImage)
+	if err != nil {
+		fmt.Println("SendDocumentMessage to wa server : ", err)
+	}
+	docMsg := &waProto.DocumentMessage{
+		Url:           &respupload.URL,
+		DirectPath:    &respupload.DirectPath,
+		MediaKey:      respupload.MediaKey,
+		FileEncSha256: respupload.FileEncSHA256,
+		FileSha256:    respupload.FileSHA256,
+		FileLength:    &respupload.FileLength,
+	}
+	docMessage := &waProto.Message{
+		DocumentMessage: docMsg,
+	}
+	resp, err = whatsapp.SendMessage(context.Background(), toJID, docMessage)
+	return resp, err
+}
