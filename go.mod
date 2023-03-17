@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/Rhymen/go-whatsapp v0.1.1
 	github.com/rs/xid v1.4.0
-	go.mau.fi/whatsmeow v0.0.0-20230313123254-2f9b85efd194
-	google.golang.org/protobuf v1.29.1
+	go.mau.fi/whatsmeow v0.0.0-20230316102651-f0c131192076
+	google.golang.org/protobuf v1.30.0
 )
 
 require (
