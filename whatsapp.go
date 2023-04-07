@@ -4,11 +4,56 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aiteung/musik"
+	_ "github.com/mattn/go-sqlite3"
 	"go.mau.fi/whatsmeow"
 	waProto "go.mau.fi/whatsmeow/binary/proto"
+	"go.mau.fi/whatsmeow/store/sqlstore"
 	"go.mau.fi/whatsmeow/types"
+	waLog "go.mau.fi/whatsmeow/util/log"
 	"google.golang.org/protobuf/proto"
 )
+
+func RunWA(handler whatsmeow.EventHandler) (waclient *whatsmeow.Client) {
+	fmt.Println("Starting Whatsapp")
+	dbLog := waLog.Stdout("Database", "ERROR", true)
+	musik.CreateFolderifNotExist("./session/")
+	container, err := sqlstore.New("sqlite3", "file:./session/gowa.db?_foreign_keys=on", dbLog)
+	if err != nil {
+		panic(err)
+	}
+	deviceStore, err := container.GetFirstDevice()
+	if err != nil {
+		panic(err)
+	}
+	clientLog := waLog.Stdout("Client", "ERROR", true)
+	waclient = whatsmeow.NewClient(deviceStore, clientLog)
+	waclient.AddEventHandler(handler)
+	if waclient.Store.ID == nil {
+		// No ID stored, new login
+		qrChan, _ := waclient.GetQRChannel(context.Background())
+		err = waclient.Connect()
+		if err != nil {
+			panic(err)
+		}
+		for evt := range qrChan {
+			if evt.Event == "code" {
+				fmt.Println("QR code:", evt.Code)
+			} else {
+				fmt.Println("Login event:", evt.Event)
+			}
+		}
+	} else {
+		// Already logged in, just connect
+		err = waclient.Connect()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Client Connected")
+	}
+	return
+
+}
 
 func GetLiveLoc(Message *waProto.Message) (lat float64, long float64) {
 	if Message.LiveLocationMessage != nil {

@@ -4,8 +4,10 @@ go 1.20
 
 require (
 	github.com/Rhymen/go-whatsapp v0.1.1
+	github.com/aiteung/musik v0.0.5
+	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/xid v1.4.0
-	go.mau.fi/whatsmeow v0.0.0-20230316102651-f0c131192076
+	go.mau.fi/whatsmeow v0.0.0-20230406121024-1ee2ff1d0f52
 	google.golang.org/protobuf v1.30.0
 )
 
