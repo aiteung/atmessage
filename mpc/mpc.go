@@ -34,6 +34,11 @@ func IteungV1(IteungIPAddress string, apikey string, Info *types.MessageInfo, Me
 			fmt.Println("groupInfo : ", groupInfo)
 		}
 		im.Is_group = "true"
+		if strings.Contains(Message.GetConversation(), "teung") || strings.Contains(Message.GetConversation(), "Teung") {
+			go waclient.SendChatPresence(Info.Chat, "composing", "")
+		}
+	} else {
+		go waclient.SendChatPresence(Info.Chat, "composing", "")
 	}
 	MessageEvent(IteungIPAddress, Info, Message, &im, waclient)
 }
