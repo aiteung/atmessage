@@ -48,6 +48,12 @@ func Send(iteungIPaddress string, im *atmessage.IteungMessage, toJID types.JID, 
 		atmessage.SendMessage(sendtosender.Message, toJID, waclient)
 	} else {
 		fmt.Println("=======Python Backend Iteung Web : Respon Empty Message=======")
+		fmt.Println("User JID : ", toJID.User)
+		fmt.Println("User Alias : ", im.Alias_name)
+		fmt.Println("User Phone Number : ", im.Phone_number)
+		fmt.Println("User Group Name : ", im.Group_name)
+		fmt.Println("User Messages : ", im.Messages)
+		fmt.Println("=======Python Backend Iteung Web : Respon Empty Message=======")
 	}
 
 }
