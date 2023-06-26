@@ -46,6 +46,8 @@ func Send(iteungIPaddress string, im *atmessage.IteungMessage, toJID types.JID, 
 	json.Unmarshal(Data, &sendtosender)
 	if sendtosender.Message != "" {
 		atmessage.SendMessage(sendtosender.Message, toJID, waclient)
+	} else {
+		fmt.Println("=======Python Backend Iteung Web : Respon Empty Message=======")
 	}
 
 }
