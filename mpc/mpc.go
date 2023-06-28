@@ -29,7 +29,7 @@ func IteungV1(IteungIPAddress string, apikey string, Info *types.MessageInfo, Me
 		groupInfo, err := waclient.GetGroupInfo(Info.Chat)
 		fmt.Println("cek err : ", err)
 		if groupInfo != nil {
-			im.Group_name = groupInfo.GroupName.Name
+			im.Group_name = groupInfo.GroupName.Name + "@" + Info.Chat.User
 		} else {
 			fmt.Println("groupInfo : ", groupInfo)
 		}
