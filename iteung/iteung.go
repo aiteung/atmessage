@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/aiteung/atapi"
 	"github.com/aiteung/atmessage"
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types"
@@ -56,4 +57,17 @@ func Send(iteungIPaddress string, im *atmessage.IteungMessage, toJID types.JID, 
 		fmt.Println("=======Python Backend Iteung Web : Respon Empty Message=======")
 	}
 
+}
+
+func PostNotif(message, id, url string) {
+	var PesanNotifGrp = atmessage.Notif{
+		User:     id,
+		Server:   "g.us",
+		Messages: message,
+	}
+	if len(id) < 15 {
+		PesanNotifGrp.Server = "s.whatsapp.net"
+	}
+
+	atapi.PostStruct[atmessage.Response](PesanNotifGrp, url)
 }
