@@ -100,11 +100,23 @@ func Extended(Message *waProto.Message, im *atmessage.IteungMessage) {
 }
 
 func Document(Message *waProto.Message, im *atmessage.IteungMessage) {
-	if Message.DocumentMessage != nil {
+	if Message.DocumentMessage == nil {
+		return
+	}
+
+	switch {
+	case Message.DocumentMessage.Title != nil:
 		im.Filename = *Message.DocumentMessage.Title
+	case Message.DocumentMessage.FileName != nil:
+		im.Filename = *Message.DocumentMessage.FileName
+
+	}
+
+	if Message.DocumentMessage.Caption != nil {
 		im.Messages = *Message.DocumentMessage.Caption
-		if im.Messages != "" {
-			im.Filedata = mediadecrypt.GetBase64Filedata(Message.DocumentMessage.Url, Message.DocumentMessage.MediaKey)
-		}
+	}
+
+	if im.Messages != "" {
+		im.Filedata = mediadecrypt.GetBase64Filedata(Message.DocumentMessage.Url, Message.DocumentMessage.MediaKey)
 	}
 }
