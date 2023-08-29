@@ -172,7 +172,7 @@ func SendDocumentMessage(plaintext []byte, filename string, caption string, mime
 }
 
 func SendImageMessage(plaintext []byte, caption string, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
-	respupload, err := whatsapp.Upload(context.Background(), plaintext, whatsmeow.MediaDocument)
+	respupload, err := whatsapp.Upload(context.Background(), plaintext, whatsmeow.MediaImage)
 	if err != nil {
 		msg := fmt.Sprintf("SendImageMessage to wa server : %s", err)
 		fmt.Println(msg)
