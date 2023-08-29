@@ -188,9 +188,9 @@ func SendImageMessage(plaintext []byte, filename string, caption string, mimetyp
 		FileLength:    &respupload.FileLength,
 	}
 
-	docMessage := &waProto.Message{
+	imgMessage := &waProto.Message{
 		ImageMessage: imgMsg,
 	}
-	resp, err = whatsapp.SendMessage(context.Background(), toJID, docMessage)
+	resp, err = whatsapp.SendMessage(context.Background(), toJID, imgMessage)
 	return resp, err
 }
