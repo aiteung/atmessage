@@ -3,6 +3,7 @@ package atmessage
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/aiteung/musik"
 	_ "github.com/mattn/go-sqlite3"
@@ -170,7 +171,7 @@ func SendDocumentMessage(plaintext []byte, filename string, caption string, mime
 	return resp, err
 }
 
-func SendImageMessage(plaintext []byte, filename string, caption string, mimetype string, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
+func SendImageMessage(plaintext []byte, caption string, toJID types.JID, whatsapp *whatsmeow.Client) (resp whatsmeow.SendResponse, err error) {
 	respupload, err := whatsapp.Upload(context.Background(), plaintext, whatsmeow.MediaDocument)
 	if err != nil {
 		msg := fmt.Sprintf("SendImageMessage to wa server : %s", err)
@@ -179,13 +180,13 @@ func SendImageMessage(plaintext []byte, filename string, caption string, mimetyp
 	}
 	imgMsg := &waProto.ImageMessage{
 		Caption:       proto.String(caption),
-		Mimetype:      proto.String(mimetype),
-		Url:           &respupload.URL,
-		DirectPath:    &respupload.DirectPath,
+		Url:           proto.String(respupload.URL),
+		DirectPath:    proto.String(respupload.DirectPath),
 		MediaKey:      respupload.MediaKey,
+		Mimetype:      proto.String(http.DetectContentType(plaintext)),
 		FileEncSha256: respupload.FileEncSHA256,
 		FileSha256:    respupload.FileSHA256,
-		FileLength:    &respupload.FileLength,
+		FileLength:    proto.Uint64(uint64(len(plaintext))),
 	}
 
 	imgMessage := &waProto.Message{
