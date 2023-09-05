@@ -8,7 +8,7 @@ require (
 	github.com/aiteung/musik v0.0.5
 	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/rs/xid v1.5.0
-	go.mau.fi/whatsmeow v0.0.0-20230824151650-6da2abde6b7c
+	go.mau.fi/whatsmeow v0.0.0-20230831081037-69534bf768bc
 	google.golang.org/protobuf v1.31.0
 )
 
