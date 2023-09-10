@@ -2,8 +2,6 @@ module github.com/aiteung/atmessage
 
 go 1.21
 
-toolchain go1.21.1
-
 require (
 	github.com/Rhymen/go-whatsapp v0.1.1
 	github.com/aiteung/atapi v0.0.16
