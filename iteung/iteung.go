@@ -59,7 +59,7 @@ func Send(iteungIPaddress string, im *atmessage.IteungMessage, toJID types.JID, 
 
 }
 
-func PostNotif(message, id, url string) atmessage.Response {
+func PostNotif(message, id, url string) (response atmessage.Response, errormsg string) {
 	var PesanNotifGrp = atmessage.Notif{
 		User:     id,
 		Server:   "g.us",
@@ -68,6 +68,7 @@ func PostNotif(message, id, url string) atmessage.Response {
 	if len(id) < 15 {
 		PesanNotifGrp.Server = "s.whatsapp.net"
 	}
+	response, errormsg = atapi.PostStruct[atmessage.Response](PesanNotifGrp, url)
 
-	return atapi.PostStruct[atmessage.Response](PesanNotifGrp, url)
+	return
 }
