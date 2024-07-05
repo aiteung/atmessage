@@ -82,7 +82,7 @@ func SendListMessage(lstmsg ListMessage, toJID types.JID, whatsapp *whatsmeow.Cl
 			tmplst := waProto.ListMessage_Row{
 				Title:       proto.String(lst.Title),
 				Description: proto.String(lst.Description),
-				RowId:       proto.String(lst.RowId),
+				RowID:       proto.String(lst.RowId),
 			}
 			lmr = append(lmr, &tmplst)
 		}
@@ -118,7 +118,7 @@ func SendButtonMessage(btnmsg ButtonsMessage, toJID types.JID, whatsapp *whatsme
 	var buttons []*waProto.ButtonsMessage_Button
 	for _, btn := range btnmsg.Buttons {
 		tmpbtn := waProto.ButtonsMessage_Button{
-			ButtonId: proto.String(btn.ButtonId),
+			ButtonID: proto.String(btn.ButtonId),
 			ButtonText: &waProto.ButtonsMessage_Button_ButtonText{
 				DisplayText: proto.String(btn.DisplayText),
 			},
@@ -157,11 +157,11 @@ func SendDocumentMessage(plaintext []byte, filename string, caption string, toJI
 		Caption:       proto.String(caption),
 		Mimetype:      proto.String(http.DetectContentType(plaintext)),
 		FileName:      &filename,
-		Url:           &respupload.URL,
+		URL:           &respupload.URL,
 		DirectPath:    &respupload.DirectPath,
 		MediaKey:      respupload.MediaKey,
-		FileEncSha256: respupload.FileEncSHA256,
-		FileSha256:    respupload.FileSHA256,
+		FileEncSHA256: respupload.FileEncSHA256,
+		FileSHA256:    respupload.FileSHA256,
 		FileLength:    &respupload.FileLength,
 	}
 	docMessage := &waProto.Message{
@@ -180,12 +180,12 @@ func SendImageMessage(plaintext []byte, caption string, toJID types.JID, whatsap
 	}
 	imgMsg := &waProto.ImageMessage{
 		Caption:       proto.String(caption),
-		Url:           proto.String(respupload.URL),
+		URL:           proto.String(respupload.URL),
 		DirectPath:    proto.String(respupload.DirectPath),
 		MediaKey:      respupload.MediaKey,
 		Mimetype:      proto.String(http.DetectContentType(plaintext)),
-		FileEncSha256: respupload.FileEncSHA256,
-		FileSha256:    respupload.FileSHA256,
+		FileEncSHA256: respupload.FileEncSHA256,
+		FileSHA256:    respupload.FileSHA256,
 		FileLength:    proto.Uint64(uint64(len(plaintext))),
 	}
 
