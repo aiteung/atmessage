@@ -85,11 +85,11 @@ func Extended(Message *waProto.Message, im *atmessage.IteungMessage) {
 			}
 			if Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage != nil {
 				im.Filename = *Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage.DirectPath
-				im.Filedata = mediadecrypt.GetBase64Filedata(Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage.Url, Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage.MediaKey)
+				im.Filedata = mediadecrypt.GetBase64Filedata(Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage.URL, Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentMessage.MediaKey)
 			}
 			if Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage != nil {
 				im.Filename = *Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage.Message.DocumentMessage.DirectPath
-				im.Filedata = mediadecrypt.GetBase64Filedata(Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage.Message.DocumentMessage.Url, Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage.Message.DocumentMessage.MediaKey)
+				im.Filedata = mediadecrypt.GetBase64Filedata(Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage.Message.DocumentMessage.URL, Message.ExtendedTextMessage.ContextInfo.QuotedMessage.DocumentWithCaptionMessage.Message.DocumentMessage.MediaKey)
 			}
 		} else {
 			fmt.Println("ContextInfo", Message.ExtendedTextMessage.ContextInfo)
@@ -117,6 +117,6 @@ func Document(Message *waProto.Message, im *atmessage.IteungMessage) {
 	}
 
 	if im.Messages != "" {
-		im.Filedata = mediadecrypt.GetBase64Filedata(Message.DocumentMessage.Url, Message.DocumentMessage.MediaKey)
+		im.Filedata = mediadecrypt.GetBase64Filedata(Message.DocumentMessage.URL, Message.DocumentMessage.MediaKey)
 	}
 }
