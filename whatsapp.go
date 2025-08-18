@@ -15,23 +15,28 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+
 func RunWA(handler whatsmeow.EventHandler) (waclient *whatsmeow.Client) {
 	fmt.Println("Starting Whatsapp")
 	dbLog := waLog.Stdout("Database", "ERROR", true)
 	musik.CreateFolderifNotExist("./session/")
-	container, err := sqlstore.New("sqlite3", "file:./session/gowa.db?_foreign_keys=on", dbLog)
+	
+	ctx := context.Background()
+	container, err := sqlstore.New(ctx, "sqlite3", "file:./session/gowa.db?_foreign_keys=on", dbLog)
 	if err != nil {
 		panic(err)
 	}
-	deviceStore, err := container.GetFirstDevice()
+
+	deviceStore, err := container.GetFirstDevice(ctx)
 	if err != nil {
 		panic(err)
 	}
+
 	clientLog := waLog.Stdout("Client", "ERROR", true)
 	waclient = whatsmeow.NewClient(deviceStore, clientLog)
 	waclient.AddEventHandler(handler)
+
 	if waclient.Store.ID == nil {
-		// No ID stored, new login
 		qrChan, _ := waclient.GetQRChannel(context.Background())
 		err = waclient.Connect()
 		if err != nil {
@@ -45,15 +50,14 @@ func RunWA(handler whatsmeow.EventHandler) (waclient *whatsmeow.Client) {
 			}
 		}
 	} else {
-		// Already logged in, just connect
 		err = waclient.Connect()
 		if err != nil {
 			panic(err)
 		}
 		fmt.Println("Client Connected")
 	}
-	return
 
+	return
 }
 
 func GetLiveLoc(Message *waProto.Message) (lat float64, long float64) {
